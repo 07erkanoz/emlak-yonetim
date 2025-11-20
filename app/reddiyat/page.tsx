@@ -1,7 +1,6 @@
-export const dynamic = "force-dynamic";
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import AppHeader from "@/components/AppHeader";
 
@@ -13,7 +12,7 @@ interface ReddiyatItem {
   parabirimi: string;
 }
 
-export default function ReddiyatPage() {
+function ReddiyatContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const msid = searchParams.get("msid");
@@ -235,5 +234,17 @@ export default function ReddiyatPage() {
         © 2024 Emlak Yönetimi - sbyazilim.com.tr
       </div>
     </div>
+  );
+}
+
+export default function ReddiyatPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-slate-400">Yükleniyor...</div>
+      </div>
+    }>
+      <ReddiyatContent />
+    </Suspense>
   );
 }
